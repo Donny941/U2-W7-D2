@@ -59,3 +59,20 @@ buttonRemove.onclick = function () {
 };
 
 // Exercise 2
+
+const counterTab = document.getElementById("counter");
+// console.log(counterTab);
+const countText = counterTab.querySelector("h2");
+// console.log(countText);
+
+let count = 0;
+
+setInterval(function () {
+  let saved = sessionStorage.getItem("savedCount");
+  if (saved) {
+    count = saved;
+  }
+  count++;
+  countText.innerText = count;
+  sessionStorage.setItem("savedCount", count);
+}, 1000);
