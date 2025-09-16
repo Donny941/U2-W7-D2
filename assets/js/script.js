@@ -11,6 +11,12 @@ const userCardCont = document.getElementById("userList");
 
 let users = [];
 
+class User {
+  constructor(name) {
+    this.uName = name;
+  }
+}
+
 const createUsers = function (inputVlaue) {
   const col = document.createElement("div");
   col.className = "col";
@@ -23,7 +29,8 @@ const createUsers = function (inputVlaue) {
     "shadow-lg",
     "d-flex",
     "gap-2",
-    "align-items-center"
+    "align-items-center",
+    "justify-content-between"
   );
   const avatarPl = document.createElement("i");
   avatarPl.classList.add("bi", "bi-person-square");
@@ -31,8 +38,14 @@ const createUsers = function (inputVlaue) {
   const userName = document.createElement("h2");
   userName.innerText = inputVlaue;
 
+  const deleteUser = document.createElement("button");
+  deleteUser.classList.add("btn", "btn-danger");
+  deleteUser.id = "deleteUser";
+  deleteUser.innerText = "Remove";
+
   userCard.appendChild(avatarPl);
   userCard.appendChild(userName);
+  userCard.appendChild(deleteUser);
   col.appendChild(userCard);
   userCardCont.appendChild(col);
 };
@@ -42,12 +55,16 @@ buttonSave.onclick = function () {
   if (input === "") {
     return;
   }
-  users.push(input);
+  const user = new User(input);
+  const userObj = user.uName;
+  console.log(userObj);
+
+  users.push(user);
 
   console.log(users);
   localStorage.setItem("users", JSON.stringify(users));
   userInput.value = "";
-  createUsers(input);
+  createUsers(userObj);
 };
 
 buttonRemove.onclick = function () {
@@ -59,6 +76,27 @@ buttonRemove.onclick = function () {
 
   userCardCont.remove("col");
 };
+
+buttonRemove.onclick = function () {
+  users = [];
+
+  console.log(users);
+
+  localStorage.clear("users");
+
+  userCardCont.remove("col");
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  const existingUser = localStorage.getItem("users");
+  if (existingUser) {
+    const userArray = JSON.parse(existingUser);
+    users = userArray;
+    userArray.forEach((user) => {
+      createUsers(user.uName);
+    });
+  }
+});
 
 // Exercise 2
 
