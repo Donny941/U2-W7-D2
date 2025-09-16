@@ -17,7 +17,7 @@ class User {
   }
 }
 
-const createUsers = function (inputVlaue) {
+const createUsers = function (inputValue) {
   const col = document.createElement("div");
   col.className = "col";
   const userCard = document.createElement("div");
@@ -36,12 +36,26 @@ const createUsers = function (inputVlaue) {
   avatarPl.classList.add("bi", "bi-person-square");
 
   const userName = document.createElement("h2");
-  userName.innerText = inputVlaue;
+  userName.innerText = inputValue;
 
   const deleteUser = document.createElement("button");
   deleteUser.classList.add("btn", "btn-danger");
   deleteUser.id = "deleteUser";
   deleteUser.innerText = "Remove";
+
+  deleteUser.onclick = function (event) {
+    event.target.closest(".col").remove();
+    const userIndex = users.findIndex((user) => user.uName === inputValue);
+    console.log(userIndex);
+    if (userIndex !== -1) {
+      users.splice(userIndex, 1);
+      if (users.length === 0) {
+        localStorage.removeItem("users");
+      } else {
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+    }
+  };
 
   userCard.appendChild(avatarPl);
   userCard.appendChild(userName);
@@ -65,16 +79,6 @@ buttonSave.onclick = function () {
   localStorage.setItem("users", JSON.stringify(users));
   userInput.value = "";
   createUsers(userObj);
-};
-
-buttonRemove.onclick = function () {
-  users = [];
-
-  console.log(users);
-
-  localStorage.clear("users");
-
-  userCardCont.remove("col");
 };
 
 buttonRemove.onclick = function () {
