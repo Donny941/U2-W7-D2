@@ -39,7 +39,9 @@ const createUsers = function (inputVlaue) {
 
 buttonSave.onclick = function () {
   const input = userInput.value;
-
+  if (input === "") {
+    return;
+  }
   users.push(input);
 
   console.log(users);
